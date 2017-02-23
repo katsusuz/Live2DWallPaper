@@ -1,0 +1,110 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<ScrollView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+
+		<LinearLayout 
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical">
+
+			<TextView
+				android:id="@+id/text1"
+				android:textSize="50px"
+				android:padding="10px"
+				android:text="background color"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<SeekBar
+				android:id="@+id/seek1"
+				android:max="255"
+				android:progress="255"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+
+			<SeekBar
+				android:id="@+id/seek2"
+				android:max="255"
+				android:progress="255"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+
+			<SeekBar
+				android:id="@+id/seek3"
+				android:max="255"
+				android:progress="255"
+				android:layout_width="fill_parent" 
+				android:layout_height="wrap_content" />
+
+			<Button
+				android:text="save"
+				android:onClick="save"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content" />
+
+
+			<TextView
+				android:textSize="50px"
+				android:padding="10px"
+				android:text=".moc"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<ListView
+				android:id="@+id/list1"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"/>
+
+
+			<TextView
+				android:textSize="50px"
+				android:padding="10px"
+				android:text=".mtn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content" />
+
+			<ListView
+				android:id="@+id/list2"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"/>
+
+
+			<RelativeLayout
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content">
+
+
+				<TextView
+					android:textSize="50px"
+					android:padding="10px"
+					android:text="textures"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+				<Button
+					android:text="+"
+					android:onClick="addList"
+					android:background="#00ff0000"
+					android:layout_alignParentRight="true"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content" />
+
+			</RelativeLayout>
+
+
+		</LinearLayout>
+
+	</ScrollView>
+
+	<ListView
+		android:transcriptMode="disabled"
+		android:id="@+id/list3"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"/>
+
+</LinearLayout>
