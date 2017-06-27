@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "com.angello10.live2dwallpaper"
-        minSdkVersion 14
-        targetSdkVersion 21
+        minSdkVersion 20
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
     }
@@ -17,8 +17,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+buildscript {
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+    }
 }

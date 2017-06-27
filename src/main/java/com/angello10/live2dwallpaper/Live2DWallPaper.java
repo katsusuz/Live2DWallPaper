@@ -18,6 +18,7 @@ public class Live2DWallPaper extends GLWallpaperService {
 		Live2DEngine engine = new Live2DEngine();
 		return engine;
 	}
+
 	class Live2DEngine extends GLEngine {
 		Live2DRenderer renderer;
 		public Live2DEngine() {

@@ -32,7 +32,7 @@ public class Live2DRenderer implements GLWallpaperService.Renderer {
 		manager = new MotionQueueManager();
 		
 		try{
-			BufferedReader br = new BufferedReader(new FileReader("sdcard/live2d.txt"));
+			BufferedReader br = new BufferedReader(new FileReader(Const.getSaveFileDir( ctx )));
 			String read;
 			while((read = br.readLine()) != null) {
 				read = read.replaceAll(" ", "");

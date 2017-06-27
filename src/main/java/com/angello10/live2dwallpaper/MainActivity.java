@@ -1,6 +1,7 @@
 package com.angello10.live2dwallpaper;
 
 import android.app.*;
+import android.databinding.DataBindingUtil;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
@@ -12,29 +13,28 @@ import android.graphics.*;
 import android.widget.AdapterView.*;
 import android.content.*;
 
+import com.angello10.live2dwallpaper.databinding.ActivityMainBinding;
 
+//TODO:StoragePermission
 public class MainActivity extends Activity {
-	ListView listView1, listView2, listView3;
-	SeekBar seek1, seek2, seek3;
+	ListView listView3;
 	ArrayAdapter moc, mtn, texture;
-	TextView text;
-	
+
 	int select = 0;
 	String[] list;
 	String directory;
-	
+
+	ActivityMainBinding binding;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+    protected void onCreate( Bundle savedInstanceState ) {
+        super.onCreate( savedInstanceState );
+        binding = DataBindingUtil.setContentView( this , R.layout.activity_main );
 
-		text = (TextView)findViewById(R.id.text1);
-		
 		class mySeekBarListener implements OnSeekBarChangeListener {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				text.setTextColor(Color.argb(255, seek1.getProgress(), seek2.getProgress(), seek3.getProgress()));
+				binding.text1.setTextColor(Color.rgb( binding.redSeek.getProgress(), binding.greenSeek.getProgress(), binding.blueSeek.getProgress()));
 			}
 
 			@Override
@@ -44,33 +44,39 @@ public class MainActivity extends Activity {
 			public void onStartTrackingTouch(SeekBar p1) {} 
 		}
 		
-		seek1 = (SeekBar)findViewById(R.id.seek1);
-		seek1.setOnSeekBarChangeListener(new mySeekBarListener());
-		seek2 = (SeekBar)findViewById(R.id.seek2);
-		seek2.setOnSeekBarChangeListener(new mySeekBarListener());
-		seek3 = (SeekBar)findViewById(R.id.seek3);
-		seek3.setOnSeekBarChangeListener(new mySeekBarListener());
-		
-		listView1 = (ListView)findViewById(R.id.list1);
+		binding.redSeek.setOnSeekBarChangeListener( new mySeekBarListener());
+        binding.greenSeek.setOnSeekBarChangeListener( new mySeekBarListener());
+        binding.blueSeek.setOnSeekBarChangeListener( new mySeekBarListener());
 
-		List<String> l = new ArrayList<String>();
+        binding.save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                save();
+            }
+        });
+
+
+
+
+
+
+
+		List<String> l = new ArrayList<>();
 		moc = new ArrayAdapter(this, android.R.layout.simple_list_item_1, l);
 		moc.add("...");
-		listView1.setAdapter(moc);
-		listView1.setOnItemClickListener(new OnItemClickListener() {
+		binding.mocList.setAdapter(moc);
+        binding.mocList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick (AdapterView parent, View view, int position, long id) {
 				select = 0;
 				chooseFile(new File("/sdcard"));
 			}
 		});
 
-		listView2 = (ListView)findViewById(R.id.list2);
-
-		l = new ArrayList<String>();
+		l = new ArrayList<>();
 		mtn = new ArrayAdapter(this, android.R.layout.simple_list_item_1, l);
 		mtn.add("...");
-		listView2.setAdapter(mtn);
-		listView2.setOnItemClickListener(new OnItemClickListener() {
+		binding.mtnList.setAdapter(mtn);
+        binding.mtnList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick (AdapterView parent, View view, int position, long id) {
 				select = 1;
 				chooseFile(new File("/sdcard"));
@@ -79,7 +85,7 @@ public class MainActivity extends Activity {
 
 		listView3 = (ListView)findViewById(R.id.list3);
 
-		l = new ArrayList<String>();
+		l = new ArrayList<>();
 		texture = new ArrayAdapter(this, android.R.layout.simple_list_item_1, l);
 		texture.add("...");
 		listView3.setAdapter(texture);
@@ -121,9 +127,9 @@ public class MainActivity extends Activity {
 						break;
 					case "background_color":
 						String[] color = data[1].split(",");
-						seek1.setProgress((int)(256 * Float.parseFloat(color[0])));
-						seek2.setProgress((int)(256 * Float.parseFloat(color[1])));
-						seek3.setProgress((int)(256 * Float.parseFloat(color[2])));
+						binding.redSeek.setProgress((int)(256 * Float.parseFloat(color[0])));
+                        binding.greenSeek.setProgress((int)(256 * Float.parseFloat(color[1])));
+                        binding.blueSeek.setProgress((int)(256 * Float.parseFloat(color[2])));
 				}
 			}
 		}catch(Exception error) {}
@@ -133,9 +139,9 @@ public class MainActivity extends Activity {
         texture.add("...");
     }
 	
-	public void save(View v) {
+	private void save() {
 		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("sdcard/live2d.txt"));
+			BufferedWriter bw = new BufferedWriter(new FileWriter( Const.getSaveFileDir( getApplicationContext())));
 			
 			int count = texture.getCount();
 			if (count > 0) bw.write("texture_paths : ");
@@ -150,11 +156,11 @@ public class MainActivity extends Activity {
 			bw.write(mtn.getItem(0) + "\n");
 			
 			bw.write("background_color : ");
-			bw.write((float)seek1.getProgress() / 256 + ", " + (float)seek2.getProgress() / 256 + ", " + (float)seek3.getProgress() / 256);
+			bw.write((float)binding.redSeek.getProgress() / 256 + ", " + (float)binding.greenSeek.getProgress() / 256 + ", " + (float)binding.blueSeek.getProgress() / 256);
 			bw.close();
 			
-			Toast.makeText(this, "save", 1).show();
-		}catch(Exception error) {Toast.makeText(this, error+"", 1).show();}
+			Toast.makeText(this, "save", Toast.LENGTH_SHORT).show();
+		}catch(Exception error) {Toast.makeText(this, error+"", Toast.LENGTH_SHORT).show();}
 	}
 	
 	public void chooseFile(File dir) {
@@ -190,7 +196,7 @@ public class MainActivity extends Activity {
 					chooseFile(list[position].equals("...") ? new File(directory).getParentFile() : new File(directory, list[position]));
 				}
 			});
-			alert.show();}catch(Exception e) {Toast.makeText(this, e+"",1).show();}
+			alert.show();}catch(Exception e) {Toast.makeText(this, e+"",Toast.LENGTH_SHORT).show();}
 		}
 	}
 }
